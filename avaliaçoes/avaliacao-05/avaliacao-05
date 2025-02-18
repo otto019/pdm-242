@@ -1,0 +1,109 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const TabBarDemo());
+}
+
+class Produto {
+  final String nome;
+  final double preco;
+
+  Produto(this.nome, this.preco);
+}
+
+class Cliente {
+  final String nome;
+  final String email;
+
+  Cliente(this.nome, this.email);
+}
+
+class Pedido {
+  final Cliente cliente;
+  final Produto produto;
+  final int quantidade;
+
+  Pedido(this.cliente, this.produto, this.quantidade);
+}
+
+class TabBarDemo extends StatelessWidget {
+  const TabBarDemo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Lista de Produtos
+    List<Produto> produtos = [
+      Produto('Camiseta', 29.99),
+      Produto('Calça', 49.99),
+      Produto('Tênis', 89.99),
+    ];
+
+    // Lista de Clientes
+    List<Cliente> clientes = [
+      Cliente('João Silva', 'joao.silva@email.com'),
+      Cliente('Maria Oliveira', 'maria.oliveira@email.com'),
+      Cliente('Pedro Santos', 'pedro.santos@email.com'),
+    ];
+
+    // Lista de Pedidos
+    List<Pedido> pedidos = [
+      Pedido(clientes[0], produtos[0], 2),
+      Pedido(clientes[1], produtos[1], 1),
+      Pedido(clientes[2], produtos[2], 3),
+    ];
+
+    return MaterialApp(
+      home: DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          appBar: AppBar(
+            bottom: const TabBar(
+              tabs: [
+                Tab(text: 'Produtos'),
+                Tab(text: 'Clientes'),
+                Tab(text: 'Pedidos'),
+              ],
+            ),
+            title: const Text('Sistema de Vendas'),
+          ),
+          body: TabBarView(
+            children: [
+              // Exibir Produtos
+              ListView.builder(
+                itemCount: produtos.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(produtos[index].nome),
+                    subtitle: Text(
+                        'Preço: R\$ ${produtos[index].preco.toStringAsFixed(2)}'),
+                  );
+                },
+              ),
+              // Exibir Clientes
+              ListView.builder(
+                itemCount: clientes.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(clientes[index].nome),
+                    subtitle: Text(clientes[index].email),
+                  );
+                },
+              ),
+              // Exibir Pedidos
+              ListView.builder(
+                itemCount: pedidos.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text('Cliente: ${pedidos[index].cliente.nome}'),
+                    subtitle: Text(
+                        'Produto: ${pedidos[index].produto.nome} - Quantidade: ${pedidos[index].quantidade}'),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
